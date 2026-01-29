@@ -3,278 +3,363 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Willy Auto - Garage Premium à Pougues-les-Eaux</title>
+    <title>NBC Dépannage - Service 24/7</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-blue: #2C5F8D;
+            --accent-yellow: #FDB927;
+            --dark-gray: #2B2D2F;
+            --medium-gray: #4A4D50;
+            --light-gray: #E8EAED;
+            --white: #FFFFFF;
+            --shadow: rgba(0, 0, 0, 0.15);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        :root {
-            --primary: #00d4ff;
-            --dark: #0a0a0a;
-            --dark-light: #1a1a1a;
-            --text-light: #b0b0b0;
-        }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--dark);
-            color: white;
-            overflow-x: hidden;
+            font-family: 'Work Sans', sans-serif;
+            background: var(--light-gray);
+            color: var(--dark-gray);
+            line-height: 1.6;
         }
 
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 20px 50px;
+        /* Header */
+        header {
+            background: var(--white);
+            box-shadow: 0 2px 15px var(--shadow);
+            padding: 1.5rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
+            top: 0;
             z-index: 1000;
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.2rem;
+            color: var(--primary-blue);
             letter-spacing: 2px;
+            position: relative;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 40px;
-            list-style: none;
+        .logo-accent {
+            color: var(--accent-yellow);
         }
 
-        .nav-links a {
-            color: white;
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--accent-yellow);
+            transition: width 0.3s ease;
+        }
+
+        .logo-container:hover .logo::after {
+            width: 100%;
+        }
+
+        .header-phone {
+            background: var(--primary-blue);
+            color: var(--white);
+            padding: 0.8rem 1.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
             text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            transition: color 0.3s;
-            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(44, 95, 141, 0.3);
         }
 
-        .nav-links a:hover {
-            color: var(--primary);
+        .header-phone:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(44, 95, 141, 0.4);
+            background: #234a6d;
         }
 
         /* Hero Section */
         .hero {
-            height: 100vh;
+            background: 
+                linear-gradient(135deg, rgba(44, 95, 141, 0.95) 0%, rgba(26, 66, 96, 0.95) 100%),
+                url('https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1600&q=80') center/cover;
+            color: var(--white);
+            padding: 5rem 5% 4rem;
             position: relative;
-            display: flex;
-            align-items: center;
             overflow: hidden;
         }
 
-        .hero-bg {
+        .hero::before {
+            content: '';
             position: absolute;
             top: 0;
-            left: 0;
-            width: 100%;
+            right: 0;
+            width: 50%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(10, 10, 10, 0.9) 100%),
-                        url('https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1920') center/cover;
-            filter: brightness(0.6);
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.6;
         }
 
         .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 50px;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .availability-badge {
+            display: inline-block;
+            background: var(--accent-yellow);
+            color: var(--dark-gray);
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
         }
 
         .hero h1 {
-  font-size: 5rem;
-  font-weight: 900;
-  line-height: 1.1;
-  margin-bottom: 20px;
-  background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
-  background-clip: text;           /* standard */
-  -webkit-background-clip: text;   /* Chrome/Safari */
-  color: transparent;              /* standard */
-  -webkit-text-fill-color: transparent; /* Safari */
-  letter-spacing: -2px;
-}
-
-
-        .hero p {
-            font-size: 1.3rem;
-            color: var(--text-light);
-            margin-bottom: 40px;
-            max-width: 600px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4.5rem;
+            line-height: 1;
+            margin-bottom: 1rem;
+            letter-spacing: 3px;
         }
 
-        .cta-group {
-            display: flex;
-            gap: 20px;
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            opacity: 0.95;
         }
 
-        .btn-primary {
-            padding: 18px 45px;
-            background: var(--primary);
-            color: var(--dark);
-            border: none;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.3);
-        }
-
-        .btn-secondary {
-            padding: 18px 45px;
-            background: transparent;
-            color: white;
-            border: 2px solid white;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-secondary:hover {
-            background: white;
-            color: var(--dark);
-        }
-
-        /* About Section */
-        .about {
-            padding: 120px 50px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: center;
-        }
-
-        .about-image {
-            position: relative;
-            height: 600px;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        .about-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .about-image::before {
-            content: '';
-            position: absolute;
-            top: -20px;
-            left: -20px;
-            right: 20px;
-            bottom: 20px;
-            border: 2px solid var(--primary);
-            border-radius: 20px;
-            z-index: -1;
-        }
-
-        .about-content h2 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 30px;
-            line-height: 1.2;
-        }
-
-        .about-content p {
+        .hero-description {
             font-size: 1.1rem;
-            color: var(--text-light);
-            line-height: 1.8;
-            margin-bottom: 20px;
+            max-width: 700px;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            line-height: 1.7;
         }
 
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-            margin-top: 50px;
+        .cta-button {
+            display: inline-block;
+            background: var(--accent-yellow);
+            color: var(--dark-gray);
+            padding: 1rem 2.5rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(253, 185, 39, 0.4);
         }
 
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        .stat-label {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(253, 185, 39, 0.6);
+            background: #e5a821;
         }
 
         /* Services Section */
-        .services {
-            padding: 120px 50px;
-            background: var(--dark-light);
+        .services-section {
+            padding: 5rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
-        .section-header {
-            text-align: center;
-            margin-bottom: 80px;
+        /* Feature Section */
+        .feature-section {
+            background: 
+                linear-gradient(135deg, rgba(44, 95, 141, 0.95), rgba(26, 66, 96, 0.95)),
+                url('https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=1600&q=80') center/cover fixed;
+            padding: 5rem 5%;
+            position: relative;
         }
 
-        .section-header h2 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-        }
-
-        .section-header p {
-            font-size: 1.2rem;
-            color: var(--text-light);
-        }
-
-        .services-grid {
+        .feature-container {
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .feature-content {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .feature-list {
+            margin-top: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out both;
+        }
+
+        .feature-item:nth-child(1) { animation-delay: 0.2s; }
+        .feature-item:nth-child(2) { animation-delay: 0.4s; }
+        .feature-item:nth-child(3) { animation-delay: 0.6s; }
+        .feature-item:nth-child(4) { animation-delay: 0.8s; }
+
+        .feature-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: var(--accent-yellow);
+            line-height: 1;
+            min-width: 60px;
+        }
+
+        .feature-text h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .feature-text p {
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.6;
+        }
+
+        .feature-image {
+            position: relative;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .feature-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-image:hover img {
+            transform: scale(1.02);
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: var(--primary-blue);
+            text-align: center;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+            position: relative;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--medium-gray);
+            font-size: 1.1rem;
+            margin-bottom: 3.5rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
         }
 
         .service-card {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 40px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.4s;
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 20px var(--shadow);
+            transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
+            min-height: 350px;
+        }
+
+        .service-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 120px;
+            height: 120px;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.08;
+            border-radius: 0 12px 0 50%;
+            transition: all 0.4s ease;
+        }
+
+        .service-card:nth-child(1)::after {
+            background-image: url('https://images.unsplash.com/photo-1632823469883-d61f6cfb5e34?w=400&q=80');
+        }
+
+        .service-card:nth-child(2)::after {
+            background-image: url('https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&q=80');
+        }
+
+        .service-card:nth-child(3)::after {
+            background-image: url('https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400&q=80');
+        }
+
+        .service-card:hover::after {
+            opacity: 0.15;
+            width: 150px;
+            height: 150px;
         }
 
         .service-card::before {
@@ -283,425 +368,505 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.4s;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-yellow));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
         }
 
         .service-card:hover::before {
-            opacity: 0.1;
+            transform: scaleX(1);
         }
 
         .service-card:hover {
-            border-color: var(--primary);
             transform: translateY(-10px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
         }
 
         .service-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            position: relative;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary-blue), #1a4260);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.4s ease;
+        }
+
+        .service-card:hover .service-icon {
+            transform: rotate(360deg) scale(1.1);
+            background: linear-gradient(135deg, var(--accent-yellow), #e5a821);
         }
 
         .service-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            position: relative;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
         }
 
         .service-card p {
-            color: var(--text-light);
-            line-height: 1.6;
-            position: relative;
+            color: var(--medium-gray);
+            line-height: 1.7;
+            font-size: 1rem;
         }
 
-        /* Gallery Section */
-        .gallery {
-            padding: 120px 50px;
+        /* Info Section */
+        .info-section {
+            background: 
+                linear-gradient(135deg, rgba(43, 45, 47, 0.97) 0%, rgba(43, 45, 47, 0.97) 100%),
+                url('https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=1600&q=80') center/cover fixed;
+            color: var(--white);
+            padding: 5rem 5%;
         }
 
-        .gallery-grid {
+        .info-container {
             max-width: 1400px;
             margin: 0 auto;
+        }
+
+        .info-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
         }
 
-        .gallery-item {
-            height: 300px;
-            border-radius: 15px;
-            overflow: hidden;
+        .info-card {
+            background: var(--medium-gray);
+            border-radius: 12px;
+            padding: 2.5rem;
+            border-left: 5px solid var(--accent-yellow);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.8s ease-out both;
+        }
+
+        .info-card:nth-child(1) { animation-delay: 0.2s; }
+        .info-card:nth-child(2) { animation-delay: 0.4s; }
+        .info-card:nth-child(3) { animation-delay: 0.6s; }
+
+        .info-card:hover {
+            transform: translateX(10px);
+            background: #555860;
+        }
+
+        .info-card h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            color: var(--accent-yellow);
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .info-item {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
             position: relative;
-            cursor: pointer;
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-
-        .gallery-item:hover img {
-            transform: scale(1.1);
-        }
-
-        .gallery-item::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(0deg, rgba(0, 212, 255, 0.3) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .gallery-item:hover::after {
-            opacity: 1;
-        }
-
-        .gallery-item:nth-child(1) {
-            grid-column: span 2;
-            grid-row: span 2;
-            height: 620px;
-        }
-
-        /* Testimonials */
-        .testimonials {
-            padding: 120px 50px;
-            background: var(--dark-light);
-        }
-
-        .testimonial-container {
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .testimonial-card {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 60px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .stars {
-            font-size: 2rem;
-            color: #ffd700;
-            margin-bottom: 30px;
-        }
-
-        .testimonial-text {
-            font-size: 1.3rem;
-            line-height: 1.8;
-            color: var(--text-light);
-            font-style: italic;
-            margin-bottom: 30px;
-        }
-
-        .testimonial-author {
             font-size: 1rem;
-            color: white;
+            line-height: 1.7;
+        }
+
+        .info-item::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent-yellow);
+            font-weight: bold;
+        }
+
+        .info-highlight {
+            color: var(--accent-yellow);
+            font-weight: 600;
         }
 
         /* Contact Section */
-        .contact {
-            padding: 120px 50px;
+        .contact-section {
+            padding: 5rem 5%;
+            background: var(--white);
+        }
+
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
         }
 
         .contact-grid {
-            max-width: 1400px;
-            margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
         }
 
         .contact-card {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 50px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            text-align: center;
-            transition: all 0.3s;
+            background: 
+                linear-gradient(135deg, rgba(44, 95, 141, 0.95), rgba(26, 66, 96, 0.95)),
+                url('https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=600&q=80') center/cover;
+            color: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 200px;
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(253, 185, 39, 0.2) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .contact-card:hover::before {
+            opacity: 1;
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .contact-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-5px);
+            transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(44, 95, 141, 0.4);
         }
 
         .contact-icon {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 20px;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
         }
 
-        .contact-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            text-transform: uppercase;
+        .contact-label {
+            font-size: 0.9rem;
+            font-weight: 600;
             letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
         }
 
-        .contact-card p {
-            color: var(--text-light);
-            line-height: 1.8;
-        }
-
-        .contact-card a {
-            color: white;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .contact-card a:hover {
-            color: var(--primary);
+        .contact-value {
+            font-size: 1.3rem;
+            font-weight: 700;
         }
 
         /* Footer */
         footer {
-            padding: 50px;
+            background: var(--dark-gray);
+            color: var(--white);
+            padding: 3rem 5%;
             text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        footer p {
-            color: var(--text-light);
-            margin-bottom: 10px;
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        /* Scroll animations */
-        .fade-in {
+        .footer-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            color: var(--accent-yellow);
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .footer-text {
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .footer-divider {
+            width: 80px;
+            height: 3px;
+            background: var(--accent-yellow);
+            margin: 2rem auto;
+        }
+
+        /* Animations for scroll */
+        .animate-on-scroll {
             opacity: 0;
             transform: translateY(30px);
-            transition: all 0.8s ease;
+            transition: all 0.8s ease-out;
         }
 
-        .fade-in.visible {
+        .animate-on-scroll.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* Responsive */
+        /* Responsive Design */
         @media (max-width: 1024px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+            
             .services-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             }
-            
-            .gallery-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .contact-grid {
+
+            .feature-container {
                 grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .feature-image {
+                order: -1;
             }
         }
 
         @media (max-width: 768px) {
-            nav {
-                padding: 20px;
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem 5%;
             }
 
-            .nav-links {
-                display: none;
+            .logo {
+                font-size: 1.8rem;
+            }
+
+            .header-phone {
+                padding: 0.7rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            .hero {
+                padding: 3rem 5% 2.5rem;
             }
 
             .hero h1 {
-                font-size: 3rem;
+                font-size: 2.5rem;
             }
 
-            .about-grid {
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .hero-description {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .services-grid,
+            .info-grid,
+            .contact-grid {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
 
-            .services-grid {
-                grid-template-columns: 1fr;
+            .service-card,
+            .info-card,
+            .contact-card {
+                padding: 2rem;
             }
 
-            .cta-group {
-                flex-direction: column;
+            .services-section,
+            .info-section,
+            .contact-section,
+            .feature-section {
+                padding: 3rem 5%;
             }
 
-            .stats {
-                grid-template-columns: 1fr;
+            .feature-number {
+                font-size: 2.5rem;
+                min-width: 50px;
+            }
+
+            .feature-text h4 {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .cta-button {
+                padding: 0.9rem 2rem;
+                font-size: 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="logo">WILLY AUTO</div>
-        <ul class="nav-links">
-            <li><a href="#accueil">Accueil</a></li>
-            <li><a href="#apropos">À propos</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
+    <header>
+        <div class="logo-container">
+            <div class="logo">NBC <span class="logo-accent">DÉPANNAGE</span></div>
+        </div>
+        <a href="tel:0658322864" class="header-phone">📞 06 58 32 28 64</a>
+    </header>
 
-    <!-- Hero Section -->
-    <section id="accueil" class="hero">
-        <div class="hero-bg"></div>
+    <section class="hero">
         <div class="hero-content">
-            <h1>Votre garage<br>nouvelle génération</h1>
-            <p>Excellence mécanique et service personnalisé à Pougues-les-Eaux. Un savoir-faire artisanal allié aux technologies modernes.</p>
-            <div class="cta-group">
-                <a href="tel:0620991812" class="btn-primary">📞 Appelez-nous</a>
-                <a href="#services" class="btn-secondary">Nos services</a>
+            <div class="availability-badge">⚡ SERVICE 24H/24 - 7J/7 ⚡</div>
+            <h1>VOCKE DISTANCE</h1>
+            <p class="hero-subtitle">Votre expert en dépannage automobile</p>
+            <p class="hero-description">
+                Avec 16 ans d'expérience dans le dépannage, nous intervenons rapidement à tout moment pour vous sortir de toute situation. Service professionnel, réactif et fiable.
+            </p>
+            <a href="tel:0658322864" class="cta-button">Appelez-nous maintenant</a>
+        </div>
+    </section>
+
+    <section class="services-section">
+        <h2 class="section-title">Nos Services</h2>
+        <p class="section-subtitle">Des solutions complètes pour tous vos besoins automobiles</p>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🔧</div>
+                <h3>Dépannage 24/7</h3>
+                <p>Intervention rapide et efficace à toute heure du jour et de la nuit. Notre équipe expérimentée est toujours prête à vous aider en cas de panne ou d'urgence sur la route.</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🚗</div>
+                <h3>Vente de Véhicules</h3>
+                <p>Large sélection de véhicules d'occasion de qualité, contrôlés et garantis. Nous vous accompagnons dans votre achat pour trouver le véhicule adapté à vos besoins.</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🚜</div>
+                <h3>Enlèvement d'Épave</h3>
+                <p>Service professionnel d'enlèvement d'épaves automobiles. Nous prenons en charge votre véhicule hors d'usage dans le respect des normes environnementales.</p>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="apropos" class="about">
-        <div class="about-grid">
-            <div class="about-image">
-                <img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=800" alt="Willy Auto - Mécanicien">
+    <section class="feature-section">
+        <div class="feature-container">
+            <div class="feature-content">
+                <h2 class="section-title" style="color: var(--white); text-align: left;">Pourquoi Choisir NBC Dépannage ?</h2>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-number">01</div>
+                        <div class="feature-text">
+                            <h4>Disponibilité Totale</h4>
+                            <p>Service 24h/24 et 7j/7 pour être là quand vous en avez besoin</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-number">02</div>
+                        <div class="feature-text">
+                            <h4>Expérience Confirmée</h4>
+                            <p>16 ans d'expertise dans le domaine du dépannage automobile</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-number">03</div>
+                        <div class="feature-text">
+                            <h4>Intervention Rapide</h4>
+                            <p>Équipe réactive pour une prise en charge immédiate</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-number">04</div>
+                        <div class="feature-text">
+                            <h4>Service de Qualité</h4>
+                            <p>Matériel professionnel et équipe qualifiée</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="about-content fade-in">
-                <h2>Un garage indépendant qui fait la différence</h2>
-                <p>Chez Willy Auto, je m'engage à vous offrir un service mécanique de qualité supérieure. Avec des années d'expérience et une passion pour l'automobile, je prends soin de votre véhicule comme si c'était le mien.</p>
-                <p>Mon atelier est équipé des dernières technologies de diagnostic pour intervenir sur tous types de véhicules, des plus anciens aux plus récents. Transparence, honnêteté et excellence sont les valeurs qui guident mon travail au quotidien.</p>
-                
-                <div class="stats">
-                    <div class="stat-item">
-                        <div class="stat-number">15+</div>
-                        <div class="stat-label">Années d'expérience</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">3.7</div>
-                        <div class="stat-label">Note Google</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">1000+</div>
-                        <div class="stat-label">Clients satisfaits</div>
-                    </div>
+            <div class="feature-image">
+                <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&q=80" alt="Dépannage professionnel">
+            </div>
+        </div>
+    </section>
+
+    <section class="info-section">
+        <div class="info-container">
+            <h2 class="section-title" style="color: var(--white);">À Propos de NBC Dépannage</h2>
+            <p class="section-subtitle" style="color: rgba(255, 255, 255, 0.8);">Une entreprise locale de confiance</p>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>📍 Notre Localisation</h3>
+                    <div class="info-item">Siège social situé à <span class="info-highlight">Varennes-Vauzelles (58640)</span></div>
+                    <div class="info-item">Zone d'intervention : <span class="info-highlight">Vocke Distance</span></div>
+                    <div class="info-item">Département de la Nièvre (58)</div>
+                </div>
+
+                <div class="info-card">
+                    <h3>🏆 Notre Expertise</h3>
+                    <div class="info-item"><span class="info-highlight">16 années</span> d'expérience professionnelle en dépannage</div>
+                    <div class="info-item"><span class="info-highlight">2 ans</span> d'activité NBC Dépannage</div>
+                    <div class="info-item">Équipe qualifiée et équipements modernes</div>
+                </div>
+
+                <div class="info-card">
+                    <h3>📋 Informations Légales</h3>
+                    <div class="info-item">SIRET : <span class="info-highlight">En cours d'enregistrement</span></div>
+                    <div class="info-item">Entreprise déclarée et certifiée</div>
+                    <div class="info-item">Assurance professionnelle complète</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section id="services" class="services">
-        <div class="section-header fade-in">
-            <h2>Services professionnels</h2>
-            <p>Une gamme complète de services pour l'entretien et la réparation de votre véhicule</p>
-        </div>
-        <div class="services-grid">
-            <div class="service-card fade-in">
-                <div class="service-icon">🔧</div>
-                <h3>Entretien & Révision</h3>
-                <p>Vidange, filtres, courroie de distribution, plaquettes de frein... Entretien complet selon les préconisations constructeur.</p>
-            </div>
-            <div class="service-card fade-in">
-                <div class="service-icon">💻</div>
-                <h3>Diagnostic Électronique</h3>
-                <p>Valise professionnelle multimarque pour identifier rapidement toute panne ou dysfonctionnement électronique.</p>
-            </div>
-            <div class="service-card fade-in">
-                <div class="service-icon">⚙️</div>
-                <h3>Réparation Moteur</h3>
-                <p>Embrayage, suspension, échappement, distribution... Toutes réparations mécaniques avec pièces d'origine ou adaptables.</p>
-            </div>
-            <div class="service-card fade-in">
-                <div class="service-icon">🛞</div>
-                <h3>Pneumatiques</h3>
-                <p>Vente, montage, équilibrage et géométrie. Conseil personnalisé pour choisir les pneus adaptés à votre usage.</p>
-            </div>
-            <div class="service-card fade-in">
-                <div class="service-icon">🔋</div>
-                <h3>Électricité Automobile</h3>
-                <p>Batterie, alternateur, démarreur, capteurs... Diagnostic et réparation de tous systèmes électriques.</p>
-            </div>
-            <div class="service-card fade-in">
-                <div class="service-icon">✅</div>
-                <h3>Contrôle Technique</h3>
-                <p>Préparation complète et réparation des points défaillants pour éviter la contre-visite.</p>
+    <section class="contact-section">
+        <div class="contact-container">
+            <h2 class="section-title">Contactez-Nous</h2>
+            <p class="section-subtitle">Nous sommes disponibles à tout moment pour répondre à vos besoins</p>
+            
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <span class="contact-icon">📞</span>
+                    <div class="contact-label">Téléphone</div>
+                    <div class="contact-value">06 58 32 28 64</div>
+                </div>
+
+                <div class="contact-card">
+                    <span class="contact-icon">✉️</span>
+                    <div class="contact-label">Email</div>
+                    <div class="contact-value">Sur demande</div>
+                </div>
+
+                <div class="contact-card">
+                    <span class="contact-icon">👻</span>
+                    <div class="contact-label">Snapchat</div>
+                    <div class="contact-value">Sur demande</div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Gallery Section -->
-    <section class="gallery">
-        <div class="section-header fade-in">
-            <h2>L'atelier en images</h2>
-            <p>Un espace moderne et équipé pour votre véhicule</p>
-        </div>
-        <div class="gallery-grid">
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1625047509168-a7026f36de04?w=800" alt="Atelier mécanique">
-            </div>
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1632823469434-e44ef8695d4e?w=600" alt="Outils professionnels">
-            </div>
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=600" alt="Réparation">
-            </div>
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1626668011277-3a4e6b3e255c?w=600" alt="Diagnostic">
-            </div>
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1580274455191-1c62238fa333?w=600" alt="Garage">
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="testimonials">
-        <div class="section-header fade-in">
-            <h2>Ce que disent nos clients</h2>
-        </div>
-        <div class="testimonial-container">
-            <div class="testimonial-card fade-in">
-                <div class="stars">★★★★☆</div>
-                <p class="testimonial-text">"Excellent service ! Willy a pris le temps de m'expliquer en détail les réparations nécessaires. Travail soigné, tarifs honnêtes et délais respectés. Je recommande sans hésitation ce garage à tous mes proches."</p>
-                <p class="testimonial-author">Note moyenne Google : 3.7/5 (47 avis)</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="section-header fade-in">
-            <h2>Prenez rendez-vous</h2>
-            <p>Je suis à votre disposition pour tous vos besoins en mécanique</p>
-        </div>
-        <div class="contact-grid">
-            <div class="contact-card fade-in">
-                <div class="contact-icon">📍</div>
-                <h3>Adresse</h3>
-                <p>ZI BRETAGNE<br>Avenue de Paris, RN7<br>58320 Pougues-les-Eaux</p>
-            </div>
-            <div class="contact-card fade-in">
-                <div class="contact-icon">📞</div>
-                <h3>Téléphone</h3>
-                <p><a href="tel:0620991812">06 20 99 18 12</a></p>
-                <p style="margin-top: 15px; font-size: 0.9rem;">Du lundi au vendredi</p>
-            </div>
-            <div class="contact-card fade-in">
-                <div class="contact-icon">🕐</div>
-                <h3>Horaires</h3>
-                <p>Lundi - Jeudi<br>08h00 - 18h00</p>
-                <p>Vendredi<br>08h00 - 17h00</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
     <footer>
-        <p style="color: white; font-size: 1.2rem; font-weight: 700; margin-bottom: 10px;">WILLY AUTO</p>
-        <p>Garage automobile premium à Pougues-les-Eaux</p>
-        <p style="margin-top: 30px; font-size: 0.9rem;">© 2026 Willy Auto - Tous droits réservés</p>
+        <div class="footer-content">
+            <div class="footer-logo">NBC DÉPANNAGE</div>
+            <p class="footer-text">Dépannage automobile professionnel - Varennes-Vauzelles, Nièvre</p>
+            <p class="footer-text">Service disponible 24 heures sur 24, 7 jours sur 7</p>
+            <div class="footer-divider"></div>
+            <p class="footer-text" style="font-size: 0.85rem;">© 2026 NBC Dépannage - Tous droits réservés</p>
+        </div>
     </footer>
 
     <script>
-        // Scroll animations
+        // Animation on scroll
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -715,20 +880,8 @@
             });
         }, observerOptions);
 
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
         });
     </script>
 </body>
