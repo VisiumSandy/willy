@@ -248,18 +248,23 @@ h1, h2, h3, h4 {
 }
 
 /* ─── SCROLL REVEAL ──────────────────────────────────────── */
-.reveal, .reveal-right {
+/* Elements are VISIBLE by default. JS adds .js-anim to body,
+   THEN we hide them for animation. Prevents blank page if JS
+   is slow or fails (common on mobile). */
+
+.js-anim .reveal,
+.js-anim .reveal-right {
   opacity: 0;
   transform: translateY(28px);
   transition: opacity var(--t-slow) var(--ease), transform var(--t-slow) var(--ease);
   transition-delay: var(--delay, 0ms);
 }
-.reveal-right {
+.js-anim .reveal-right {
   transform: translateX(28px);
 }
 .revealed {
-  opacity: 1;
-  transform: translate(0);
+  opacity: 1 !important;
+  transform: translate(0) !important;
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -1456,8 +1461,9 @@ h1, h2, h3, h4 {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
-  .reveal, .reveal-right {
-    opacity: 1;
-    transform: none;
+  .js-anim .reveal,
+  .js-anim .reveal-right {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
