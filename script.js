@@ -275,5 +275,5 @@
   `;
   document.head.appendChild(styleSheet);
 
-  console.log("[NBC Dépannage] Site chargé — 24h/24, 7j/7 🚗🔧");
+  console.log("[NBC Dépannage] Site chargé — 24h/24, 7j/7 · 06 61 94 82 50 🚗🔧");
 })();
