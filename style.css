@@ -473,11 +473,73 @@ h1, h2, h3, h4 {
   margin-bottom: 28px;
 }
 
-.trust-chips {
+/* ─── HERO SERVICE TAGS ──────────────────────────────────── */
+.hero-services-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  margin-bottom: 20px;
 }
+
+.htag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border-2);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--muted);
+  background: var(--bg-3);
+  transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast);
+}
+.htag em {
+  font-style: normal;
+  font-weight: 700;
+  color: #10b981;
+  font-size: 0.74rem;
+  background: rgba(16,185,129,0.1);
+  border: 1px solid rgba(16,185,129,0.25);
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-left: 2px;
+}
+.htag--active {
+  border-color: rgba(255,107,26,0.3);
+  color: var(--text);
+  background: rgba(255,107,26,0.06);
+}
+.htag--active svg { color: var(--accent); }
+
+/* Hero title secondary lines slightly smaller */
+.hero-title-line2 {
+  font-size: 0.88em;
+  color: var(--text);
+  opacity: 0.85;
+}
+.hero-title-line3 {
+  font-size: 0.78em;
+  color: var(--muted);
+  opacity: 0.9;
+}
+
+/* France badge */
+.badge-france {
+  background: rgba(0, 82, 204, 0.1);
+  border: 1px solid rgba(0, 82, 204, 0.25);
+  color: #6ea8fe;
+  padding: 5px 12px;
+  border-radius: 40px;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.trust-chips { margin-top: 4px; }
+
+
 
 /* Hero Visual — Gauge Card */
 .hero-visual {
