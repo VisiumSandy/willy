@@ -1,285 +1,235 @@
 /* ============================================================
-   NBC DÉPANNAGE — script.js
-   ─ Scroll reveal (IntersectionObserver)
-   ─ Header scroll state
-   ─ Mobile menu toggle
-   ─ Animated counters
-   ─ Gauge animation
-   ─ Contact form mock submit
-   ─ Footer year
-   ─ Mobile nav link close
+   NBC DÉPANNAGE — script.js  (rebuild v3 — mobile-safe)
+   Principe : le contenu est TOUJOURS visible sans JS.
+   JS ajoute uniquement des bonus (animations, compteurs, menu).
    ============================================================ */
-
 (function () {
   "use strict";
 
-  /* ─── CRITICAL: Add js-anim class so CSS animations activate
-         Only after DOM is ready — prevents blank page on mobile ─ */
-  document.addEventListener("DOMContentLoaded", function () {
-    document.body.classList.add("js-anim");
-  });
-
-  /* ─── 1. FOOTER YEAR ──────────────────────────────────── */
-  document.addEventListener("DOMContentLoaded", function () {
-    const yearEl = document.getElementById("footer-year");
-    if (yearEl) yearEl.textContent = new Date().getFullYear();
-  });
-
-  /* ─── 2. HEADER SCROLL STATE ──────────────────────────── */
-  const header = document.getElementById("site-header");
-
-  function onScroll() {
-    if (!header) return;
-    if (window.scrollY > 20) {
-      header.classList.add("scrolled");
-    } else {
-      header.classList.remove("scrolled");
-    }
+  /* ── utilitaire DOM ready ── */
+  function ready(fn) {
+    if (document.readyState !== "loading") fn();
+    else document.addEventListener("DOMContentLoaded", fn);
   }
 
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("DOMContentLoaded", onScroll);
+  /* ══════════════════════════════════════════════════════
+     1. SCROLL REVEAL — bonus optionnel
+        N'affecte que les éléments HORS du viewport initial.
+        Si l'observer plante → éléments restent visibles.
+  ══════════════════════════════════════════════════════ */
+  ready(function () {
+    if (!("IntersectionObserver" in window)) return; // vieux navigateurs → skip
 
-  /* ─── 3. MOBILE MENU TOGGLE ───────────────────────────── */
-  document.addEventListener("DOMContentLoaded", function () {
-    const menuToggle = document.getElementById("menu-toggle");
-    const mobileNav  = document.getElementById("mobile-nav");
-
-    if (menuToggle && mobileNav) {
-      menuToggle.addEventListener("click", () => {
-        const isOpen = mobileNav.classList.toggle("open");
-        menuToggle.classList.toggle("open", isOpen);
-        menuToggle.setAttribute("aria-expanded", isOpen);
-        mobileNav.setAttribute("aria-hidden", !isOpen);
-      });
-
-      mobileNav.querySelectorAll(".mobile-link, .btn").forEach((link) => {
-        link.addEventListener("click", () => {
-          mobileNav.classList.remove("open");
-          menuToggle.classList.remove("open");
-          menuToggle.setAttribute("aria-expanded", "false");
-          mobileNav.setAttribute("aria-hidden", "true");
-        });
-      });
-
-      document.addEventListener("click", (e) => {
-        if (header && !header.contains(e.target) && mobileNav.classList.contains("open")) {
-          mobileNav.classList.remove("open");
-          menuToggle.classList.remove("open");
-          menuToggle.setAttribute("aria-expanded", "false");
-          mobileNav.setAttribute("aria-hidden", "true");
-        }
-      });
-    }
-  });
-
-  /* ─── 4. SCROLL REVEAL ────────────────────────────────── */
-  document.addEventListener("DOMContentLoaded", function () {
-    const revealEls = document.querySelectorAll(".reveal, .reveal-right");
-
-    if (!revealEls.length) return;
-
-    if ("IntersectionObserver" in window) {
-      const revealObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("revealed");
-              revealObserver.unobserve(entry.target);
-            }
-          });
-        },
-        {
-          threshold: 0.05,          // lower = triggers earlier on mobile
-          rootMargin: "0px 0px -20px 0px",
-        }
+    // On attend 200ms que le layout soit stable (Safari iOS)
+    setTimeout(function () {
+      var els = document.querySelectorAll(
+        ".section .reveal, .section .reveal-right, " +
+        ".section--dark .reveal, .section--stats .reveal"
       );
 
-      revealEls.forEach((el) => revealObserver.observe(el));
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.remove("will-animate");
+            entry.target.classList.add("did-animate");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.05, rootMargin: "0px 0px -20px 0px" });
 
-      /* Safety fallback: reveal everything after 2s in case observer stalls */
-      setTimeout(() => {
-        revealEls.forEach((el) => el.classList.add("revealed"));
-      }, 2000);
+      els.forEach(function (el) {
+        // Vérifie que l'élément n'est PAS déjà dans le viewport
+        var rect = el.getBoundingClientRect();
+        var inView = rect.top < window.innerHeight && rect.bottom > 0;
+        if (!inView) {
+          el.classList.add("will-animate");
+          observer.observe(el);
+        }
+      });
 
-    } else {
-      /* No IntersectionObserver support — show everything immediately */
-      revealEls.forEach((el) => el.classList.add("revealed"));
-    }
+      // Filet absolu : révèle tout après 2.5s
+      setTimeout(function () {
+        els.forEach(function (el) {
+          el.classList.remove("will-animate");
+          el.classList.add("did-animate");
+        });
+      }, 2500);
+
+    }, 200);
   });
 
-  /* ─── 5. ANIMATED COUNTERS ────────────────────────────── */
-  document.addEventListener("DOMContentLoaded", function () {
-    const counterEls = document.querySelectorAll("[data-count]");
-    if (!counterEls.length) return;
+  /* ══════════════════════════════════════════════════════
+     2. FOOTER YEAR
+  ══════════════════════════════════════════════════════ */
+  ready(function () {
+    var el = document.getElementById("footer-year");
+    if (el) el.textContent = new Date().getFullYear();
+  });
 
-    function easeOutQuart(t) {
-      return 1 - Math.pow(1 - t, 4);
+  /* ══════════════════════════════════════════════════════
+     3. HEADER SCROLL
+  ══════════════════════════════════════════════════════ */
+  var header = document.getElementById("site-header");
+  function updateHeader() {
+    if (!header) return;
+    header.classList.toggle("scrolled", window.scrollY > 20);
+  }
+  window.addEventListener("scroll", updateHeader, { passive: true });
+  ready(updateHeader);
+
+  /* ══════════════════════════════════════════════════════
+     4. MENU MOBILE
+  ══════════════════════════════════════════════════════ */
+  ready(function () {
+    var toggle = document.getElementById("menu-toggle");
+    var nav    = document.getElementById("mobile-nav");
+    if (!toggle || !nav) return;
+
+    function closeMenu() {
+      nav.classList.remove("open");
+      toggle.classList.remove("open");
+      toggle.setAttribute("aria-expanded", "false");
+      nav.setAttribute("aria-hidden", "true");
     }
 
-    function animateCounter(el) {
-      const target = parseInt(el.getAttribute("data-count"), 10);
-      if (isNaN(target)) return;
-      const duration = 1400;
-      let startTime = null;
+    toggle.addEventListener("click", function () {
+      var open = nav.classList.toggle("open");
+      toggle.classList.toggle("open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+      nav.setAttribute("aria-hidden", String(!open));
+    });
 
-      function step(timestamp) {
-        if (!startTime) startTime = timestamp;
-        const elapsed = timestamp - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        el.textContent = Math.round(easeOutQuart(progress) * target);
-        if (progress < 1) requestAnimationFrame(step);
+    nav.querySelectorAll("a").forEach(function (a) {
+      a.addEventListener("click", closeMenu);
+    });
+
+    document.addEventListener("click", function (e) {
+      if (header && !header.contains(e.target) && nav.classList.contains("open")) closeMenu();
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && nav.classList.contains("open")) { closeMenu(); toggle.focus(); }
+    });
+  });
+
+  /* ══════════════════════════════════════════════════════
+     5. COMPTEURS ANIMÉS
+        Utilise setTimeout comme fallback si l'observer
+        ne se déclenche pas (problème courant sur iOS Safari)
+  ══════════════════════════════════════════════════════ */
+  ready(function () {
+    var counters = document.querySelectorAll("[data-count]");
+    if (!counters.length) return;
+
+    function runCounter(el) {
+      if (el.dataset.done) return;
+      el.dataset.done = "1";
+      var target   = parseInt(el.getAttribute("data-count"), 10);
+      var duration = 1200;
+      var start    = null;
+      function step(ts) {
+        if (!start) start = ts;
+        var p    = Math.min((ts - start) / duration, 1);
+        var ease = 1 - Math.pow(1 - p, 4);
+        el.textContent = Math.round(ease * target);
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = target;
       }
       requestAnimationFrame(step);
     }
 
     if ("IntersectionObserver" in window) {
-      const counterObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              animateCounter(entry.target);
-              counterObserver.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.3 }
-      );
-      counterEls.forEach((el) => counterObserver.observe(el));
-    } else {
-      counterEls.forEach((el) => animateCounter(el));
+      var cObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) { runCounter(entry.target); cObs.unobserve(entry.target); }
+        });
+      }, { threshold: 0.1 }); // seuil bas = déclenche plus facilement
+
+      counters.forEach(function (el) { cObs.observe(el); });
     }
+
+    // Fallback : si l'observer ne se déclenche pas après 2s → force le compte
+    setTimeout(function () {
+      counters.forEach(function (el) { runCounter(el); });
+    }, 2000);
   });
 
-  /* ─── 6. GAUGE ANIMATION ──────────────────────────────── */
-  document.addEventListener("DOMContentLoaded", function () {
-    const gaugeEl = document.getElementById("gauge-avail");
-    if (!gaugeEl) return;
-
-    const circumference = 2 * Math.PI * 50;
-    gaugeEl.style.strokeDasharray = circumference;
-    gaugeEl.style.strokeDashoffset = circumference;
-
-    if ("IntersectionObserver" in window) {
-      const gaugeObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              setTimeout(() => {
-                gaugeEl.style.transition = "stroke-dashoffset 1.6s cubic-bezier(0.22,1,0.36,1)";
-                gaugeEl.style.strokeDashoffset = circumference * 0.02;
-              }, 300);
-              gaugeObserver.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.3 }
-      );
-      gaugeObserver.observe(gaugeEl);
-    } else {
-      gaugeEl.style.strokeDashoffset = circumference * 0.02;
-    }
+  /* ══════════════════════════════════════════════════════
+     6. JAUGE SVG
+  ══════════════════════════════════════════════════════ */
+  ready(function () {
+    var gauge = document.getElementById("gauge-avail");
+    if (!gauge) return;
+    var circ = 2 * Math.PI * 50;
+    gauge.style.strokeDasharray  = circ;
+    gauge.style.strokeDashoffset = circ;
+    setTimeout(function () {
+      gauge.style.transition = "stroke-dashoffset 1.8s ease";
+      gauge.style.strokeDashoffset = circ * 0.02;
+    }, 500);
   });
 
-  /* ─── 7. CONTACT FORM SUBMIT (mock) ──────────────────── */
-  document.addEventListener("DOMContentLoaded", function () {
-    const contactForm     = document.getElementById("contact-form");
-    const formSuccess     = document.getElementById("form-success");
-    const contactFormWrap = document.querySelector(".contact-form-wrap");
+  /* ══════════════════════════════════════════════════════
+     7. FORMULAIRE CONTACT
+  ══════════════════════════════════════════════════════ */
+  ready(function () {
+    var form    = document.getElementById("contact-form");
+    var success = document.getElementById("form-success");
+    var wrap    = document.querySelector(".contact-form-wrap");
+    if (!form) return;
 
-    if (!contactForm) return;
-
-    contactForm.addEventListener("submit", function (e) {
+    form.addEventListener("submit", function (e) {
       e.preventDefault();
-
-      const name  = contactForm.querySelector("#name");
-      const phone = contactForm.querySelector("#phone");
-      let valid = true;
-
-      [name, phone].forEach((field) => {
-        if (!field.value.trim()) {
-          field.classList.add("error");
-          field.setAttribute("aria-invalid", "true");
+      var valid = true;
+      ["#name", "#phone"].forEach(function (sel) {
+        var f = form.querySelector(sel);
+        if (!f.value.trim()) {
+          f.classList.add("error");
+          f.setAttribute("aria-invalid", "true");
           valid = false;
-          field.addEventListener("input", () => {
-            field.classList.remove("error");
-            field.removeAttribute("aria-invalid");
+          f.addEventListener("input", function () {
+            f.classList.remove("error"); f.removeAttribute("aria-invalid");
           }, { once: true });
         }
       });
-
       if (!valid) return;
 
-      const submitBtn = contactForm.querySelector("button[type='submit']");
-      submitBtn.textContent = "Envoi en cours…";
-      submitBtn.disabled = true;
+      var btn = form.querySelector("button[type='submit']");
+      btn.textContent = "Envoi en cours…";
+      btn.disabled = true;
 
-      setTimeout(() => {
-        contactForm.hidden = true;
-        const hdr = contactFormWrap.querySelector(".contact-form-header");
+      setTimeout(function () {
+        form.hidden = true;
+        var hdr = wrap && wrap.querySelector(".contact-form-header");
         if (hdr) hdr.hidden = true;
-        if (formSuccess) {
-          formSuccess.hidden = false;
-          formSuccess.focus();
-        }
+        if (success) { success.hidden = false; success.focus(); }
       }, 900);
     });
   });
 
-  /* ─── 8. PARALLAX HERO GRID (très léger, desktop only) ── */
-  document.addEventListener("DOMContentLoaded", function () {
-    const heroGrid = document.querySelector(".hero-grid");
-    const isMobile = window.innerWidth < 768;
-
-    if (heroGrid && !isMobile &&
-        !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      window.addEventListener("scroll", () => {
-        heroGrid.style.transform = `translateY(${window.scrollY * 0.15}px)`;
-      }, { passive: true });
-    }
-  });
-
-  /* ─── 9. SMOOTH SCROLL ────────────────────────────────── */
-  document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-      anchor.addEventListener("click", function (e) {
-        const target = document.querySelector(this.getAttribute("href"));
-        if (target) {
-          e.preventDefault();
-          const hdr = document.getElementById("site-header");
-          const headerH = hdr ? hdr.offsetHeight : 68;
-          const targetTop = target.getBoundingClientRect().top + window.scrollY - headerH - 8;
-          window.scrollTo({ top: targetTop, behavior: "smooth" });
-        }
+  /* ══════════════════════════════════════════════════════
+     8. SMOOTH SCROLL (compatible Safari)
+  ══════════════════════════════════════════════════════ */
+  ready(function () {
+    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+      a.addEventListener("click", function (e) {
+        var id = this.getAttribute("href");
+        var target = document.querySelector(id);
+        if (!target) return;
+        e.preventDefault();
+        var hdr    = document.getElementById("site-header");
+        var offset = hdr ? hdr.offsetHeight + 8 : 76;
+        var top    = target.getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({ top: top, behavior: "smooth" });
       });
     });
   });
 
-  /* ─── 10. KEYBOARD ESC — close mobile nav ────────────── */
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      const mobileNav  = document.getElementById("mobile-nav");
-      const menuToggle = document.getElementById("menu-toggle");
-      if (mobileNav && mobileNav.classList.contains("open")) {
-        mobileNav.classList.remove("open");
-        menuToggle.classList.remove("open");
-        menuToggle.setAttribute("aria-expanded", "false");
-        mobileNav.setAttribute("aria-hidden", "true");
-        menuToggle.focus();
-      }
-    }
-  });
+  /* ══════════════════════════════════════════════════════
+     9. STYLE ERREUR FORM
+  ══════════════════════════════════════════════════════ */
+  var s = document.createElement("style");
+  s.textContent = ".form-input.error{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.15);}";
+  document.head.appendChild(s);
 
-  /* ─── 11. FORM ERROR STYLES ───────────────────────────── */
-  const styleSheet = document.createElement("style");
-  styleSheet.textContent = `
-    .form-input.error {
-      border-color: #ef4444;
-      box-shadow: 0 0 0 3px rgba(239,68,68,0.18);
-    }
-    .header-nav a.active { color: var(--text); }
-  `;
-  document.head.appendChild(styleSheet);
-
-  console.log("[NBC Dépannage] Site chargé — 24h/24, 7j/7 · 06 61 94 82 50 🚗🔧");
 })();
