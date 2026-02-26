@@ -247,24 +247,25 @@ h1, h2, h3, h4 {
   margin-right: auto;
 }
 
-/* ─── SCROLL REVEAL ──────────────────────────────────────── */
-/* Elements are VISIBLE by default. JS adds .js-anim to body,
-   THEN we hide them for animation. Prevents blank page if JS
-   is slow or fails (common on mobile). */
+/* ─── REVEAL — TOUJOURS VISIBLE (bullet-proof mobile) ─────── */
+/* Règle absolue : JAMAIS d'opacity:0 sur .reveal en CSS pur.
+   Tout le contenu est visible par défaut.
+   Les transitions douces sont un bonus optionnel via JS.       */
 
-.js-anim .reveal,
-.js-anim .reveal-right {
+.reveal, .reveal-right, .revealed { opacity: 1; transform: none; }
+
+/* Scroll-reveal optionnel : JS ajoute .will-animate PUIS
+   .did-animate quand l'élément entre dans le viewport.
+   Si JS échoue → éléments restent visibles.                   */
+.will-animate {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity var(--t-slow) var(--ease), transform var(--t-slow) var(--ease);
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
   transition-delay: var(--delay, 0ms);
 }
-.js-anim .reveal-right {
-  transform: translateX(28px);
-}
-.revealed {
-  opacity: 1 !important;
-  transform: translate(0) !important;
+.will-animate.did-animate {
+  opacity: 1;
+  transform: none;
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -1460,10 +1461,5 @@ h1, h2, h3, h4 {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
-  }
-  .js-anim .reveal,
-  .js-anim .reveal-right {
-    opacity: 1 !important;
-    transform: none !important;
   }
 }
